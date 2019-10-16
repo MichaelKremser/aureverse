@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1571257026 source:/home/michael/Projects/aureverse/main.c
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+
