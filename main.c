@@ -9,18 +9,26 @@ struct auheader {
     unsigned char coding[4];
     unsigned char sample_rate[4];
     unsigned char channels[4];
-    unsigned char info[4];
+    //unsigned char info[4];
 };
 
 int main()
 {
     printf("Opening au file...\n");
     FILE *ptr_aufile;
+    FILE *ptr_aufile_rev;
     struct auheader my_auheader;
-    ptr_aufile = fopen("/tmp/Xylo.au", "rb");
+    ptr_aufile = fopen("/tmp/hallo.au", "rb");
     if (!ptr_aufile)
     {
         printf("Could not open file.");
+        return 1;
+    }
+    ptr_aufile_rev = fopen("/tmp/hallo_rev.au", "wb");
+    if (!ptr_aufile)
+    {
+        printf("Could not open file.");
+        return 1;
     }
     else
     {
@@ -64,13 +72,32 @@ int main()
             | (unsigned long)my_auheader.channels[3];
         printf("channels = %u\n", channels);
 
+        unsigned int skipBytes = data_offset - sizeof(struct auheader);
+        printf("skipBytes = %u\n", skipBytes);
+        char skipped[skipBytes];
+        fread(&skipped, skipBytes, 1, ptr_aufile);
+
         unsigned char original_stream[data_size];
         unsigned char reversed_stream[data_size];
 
-        fread(&original_stream, data_size,1, ptr_aufile);
-        for (int i = 0; i < 16; i++)
-            printf("byte #%i = %i\n", i, original_stream[i]);
+        fread(&original_stream, data_size, 1, ptr_aufile);
+        int chunk_size = channels * 2;
+        int index = 0, reversed_index = data_size - chunk_size;
+        while (index < data_size)
+        {
+            printf("Copying %i bytes at index %i... ", chunk_size, index);
+            for (int subindex = 0; subindex < chunk_size; subindex++)
+            {
+                reversed_stream[reversed_index + subindex] = original_stream[index + subindex];
+            }
+            index += chunk_size;
+            reversed_index -= chunk_size;
+        }
+
+        fwrite(&my_auheader, sizeof(my_auheader), 1, ptr_aufile_rev);
+        fwrite(&reversed_stream, sizeof(reversed_stream), 1, ptr_aufile_rev);
     }
+    fclose(ptr_aufile_rev);
     fclose(ptr_aufile);
     return 0;
 }
