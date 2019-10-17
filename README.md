@@ -6,7 +6,7 @@ Reverses the audio stored in an AU file.
 
 It can be created with this command:
 
-    espeak -v de "hallo welt" --stdout | ffmpeg -f wav -i pipe: hallo.au
+    espeak -v de "hallo welt" --stdout | ffmpeg -f wav -i pipe: /tmp/hallo.au
     
 # Rationale
 
