@@ -33,19 +33,19 @@ int main()
             | (unsigned int)my_auheader.data_offset[1] << 16
             | (unsigned int)my_auheader.data_offset[2] << 8
             | (unsigned int)my_auheader.data_offset[3];
-        printf("data_offset = %d\n", data_offset);
+        printf("data_offset = %u\n", data_offset);
 
         unsigned int data_size = (unsigned int)my_auheader.data_size[0] << 24
             | (unsigned int)my_auheader.data_size[1] << 16
             | (unsigned int)my_auheader.data_size[2] << 8
             | (unsigned int)my_auheader.data_size[3];
-        printf("data_size = %d\n", data_size);
+        printf("data_size = %u\n", data_size);
 
         unsigned int coding = (unsigned int)my_auheader.coding[0] << 24
             | (unsigned int)my_auheader.coding[1] << 16
             | (unsigned int)my_auheader.coding[2] << 8
             | (unsigned int)my_auheader.coding[3];
-        printf("coding = %d\n", coding);
+        printf("coding = %u\n", coding);
         if (coding != 3)
         {
             printf("I am sorry, I only support 16 bit linear PCM by now.");
@@ -62,7 +62,7 @@ int main()
             | (unsigned long)my_auheader.channels[1] << 16
             | (unsigned long)my_auheader.channels[2] << 8
             | (unsigned long)my_auheader.channels[3];
-        printf("channels = %d\n", channels);
+        printf("channels = %u\n", channels);
 
         unsigned char original_stream[data_size];
         unsigned char reversed_stream[data_size];
