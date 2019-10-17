@@ -66,6 +66,10 @@ int main()
 
         unsigned char original_stream[data_size];
         unsigned char reversed_stream[data_size];
+
+        fread(&original_stream, data_size,1, ptr_aufile);
+        for (int i = 0; i < 16; i++)
+            printf("byte #%i = %i\n", i, original_stream[i]);
     }
     fclose(ptr_aufile);
     return 0;
